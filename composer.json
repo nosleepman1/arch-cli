@@ -11,7 +11,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Nosleepman\\ArchCLI\\ServiceProvider"
+                "Nosleepman\\ArchCLI\\ArchCLIServiceProvider"
             ]
         }
     },

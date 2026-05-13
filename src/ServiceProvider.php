@@ -5,7 +5,7 @@ namespace Nosleepman\ArchCLI;
 use Nosleepman\ArchCLI\Console\Commands\GenerateModuleCommand;
 use Illuminate\Support\ServiceProvider;
 
-class ServiceProvider extends ServiceProvider
+class ArchCLIServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
