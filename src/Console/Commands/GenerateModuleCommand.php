@@ -3,12 +3,10 @@
 namespace Nosleepman\ArchCLI\Console\Commands;
 
 use Illuminate\Console\Command;
-use Nosleepman\ArchCLI\Generators\ModelGenerator;
-use Nosleepman\ArchCLI\Generators\MigrationGenerator;
-use Nosleepman\ArchCLI\Generators\ServiceGenerator;
-use Nosleepman\ArchCLI\Generators\ControllerGenerator;
-use Nosleepman\ArchCLI\Generators\RequestGenerator;
-use Nosleepman\ArchCLI\Generators\PolicyGenerator;
+use Nosleepman\ArchCLI\Generators\EventGenerator;
+use Nosleepman\ArchCLI\Generators\ListenerGenerator;
+use Nosleepman\ArchCLI\Generators\NotificationGenerator;
+use Nosleepman\ArchCLI\Generators\ResourceGenerator;
 
 class GenerateModuleCommand extends Command
 {
@@ -23,33 +21,58 @@ class GenerateModuleCommand extends Command
 
         // Interactive prompts
         $modelName = $this->ask('Model name', $name);
-        $fields = $this->ask('Fields (e.g., name:string, email:string:unique)', 'name:string');
+        $fields = $this->askForFields();
         $version = $this->choice('Controller version', ['v1', 'v2', 'v3'], 'v1');
-        $withService = $this->confirm('Include service layer?', true);
-        $withRepository = $this->confirm('Include repository?', false);
-        $withRequests = $this->confirm('Include requests?', true);
         $withPolicies = $this->confirm('Include policies?', true);
-        $withResources = $this->confirm('Include resources?', false);
         $withEvents = $this->confirm('Include events?', false);
-        $withListeners = $this->confirm('Include listeners?', false);
-        $withNotifications = $this->confirm('Include notifications?', false);
-        $withTests = $this->confirm('Include tests?', false);
 
-        // For Phase 1, generate basic components
+        // Always include service, requests, resources
+        $withService = true;
+        $withRequests = true;
+        $withResources = true;
+        $withListeners = $withEvents; 
+        $withNotifications = $withEvents; 
+        $withTests = false; 
+
+        // Generate components
         $this->generateModel($modelName, $fields);
         $this->generateMigration($modelName, $fields);
-        if ($withService) {
-            $this->generateService($modelName);
-        }
+        $this->generateService($modelName);
         $this->generateController($modelName, $version, $withService);
-        if ($withRequests) {
-            $this->generateRequests($modelName);
-        }
+        $this->generateRequests($modelName, $fields);
         if ($withPolicies) {
             $this->generatePolicy($modelName);
         }
+        if ($withEvents) {
+            $this->generateEvent($modelName);
+        }
+        if ($withListeners) {
+            $this->generateListener($modelName);
+        }
+        if ($withNotifications) {
+            $this->generateNotification($modelName);
+        }
+        if ($withResources) {
+            $this->generateResource($modelName);
+        }
 
         $this->info('Module generated successfully!');
+    }
+
+    private function askForFields()
+    {
+        $fields = [];
+        $this->info('Enter fields (name:type, press Enter for each field, empty line to finish):');
+        
+        while (true) {
+            $field = $this->ask('Field (or empty to finish)');
+            if (empty($field)) {
+                break;
+            }
+            $fields[] = $field;
+        }
+        
+        return implode(',', $fields);
     }
 
     private function generateModel($name, $fields)
@@ -85,6 +108,30 @@ class GenerateModuleCommand extends Command
     private function generatePolicy($name)
     {
         $generator = new PolicyGenerator();
+        $generator->generate($name);
+    }
+
+    private function generateEvent($name)
+    {
+        $generator = new EventGenerator();
+        $generator->generate($name);
+    }
+
+    private function generateListener($name)
+    {
+        $generator = new ListenerGenerator();
+        $generator->generate($name);
+    }
+
+    private function generateNotification($name)
+    {
+        $generator = new NotificationGenerator();
+        $generator->generate($name);
+    }
+
+    private function generateResource($name)
+    {
+        $generator = new ResourceGenerator();
         $generator->generate($name);
     }
 }
