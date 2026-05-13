@@ -3,6 +3,12 @@
 namespace Nosleepman\ArchCLI\Console\Commands;
 
 use Illuminate\Console\Command;
+use Nosleepman\ArchCLI\Generators\ModelGenerator;
+use Nosleepman\ArchCLI\Generators\MigrationGenerator;
+use Nosleepman\ArchCLI\Generators\ServiceGenerator;
+use Nosleepman\ArchCLI\Generators\ControllerGenerator;
+use Nosleepman\ArchCLI\Generators\RequestGenerator;
+use Nosleepman\ArchCLI\Generators\PolicyGenerator;
 use Nosleepman\ArchCLI\Generators\EventGenerator;
 use Nosleepman\ArchCLI\Generators\ListenerGenerator;
 use Nosleepman\ArchCLI\Generators\NotificationGenerator;
