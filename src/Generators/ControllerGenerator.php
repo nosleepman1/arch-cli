@@ -36,12 +36,14 @@ class ControllerGenerator
         );
 
         // Add uses
-        $uses = '';
+        $uses = "use App\Http\Controllers\Controller;\n";
+        $uses .= "use App\Models\\{$name};\n";
         if ($withService) {
             $uses .= "use App\Services\\{$name}Service;\n";
         }
         $uses .= "use App\Http\Requests\\{$name}\\Store{$name}Request;\n";
         $uses .= "use App\Http\Requests\\{$name}\\Update{$name}Request;\n";
+        $uses .= "use App\Http\Resources\\{$name}Resource;\n";
         $uses .= "use Illuminate\Http\Request;\n";
 
         // Insert after namespace
@@ -71,14 +73,14 @@ class ControllerGenerator
         // Replace store method
         $content = preg_replace(
             '/public function store\(Request \$request\)\s*\{[^}]*\}/s',
-            'public function store(Store' . $name . 'Request $request)' . PHP_EOL . '    {' . PHP_EOL . '        ' . ($withService ? '$data = $request->validated();' . PHP_EOL . '        return response()->json($this->service->create' . $name . '($data), 201);' : '$data = $request->validated();' . PHP_EOL . '        return response()->json(' . $name . '::create($data), 201);') . PHP_EOL . '    }',
+            'public function store(Store' . $name . 'Request $request)' . PHP_EOL . '    {' . PHP_EOL . '        ' . ($withService ? '$data = $request->validated();' . PHP_EOL . '        $model = $this->service->create' . $name . '($data);' . PHP_EOL . '        return response()->json(new ' . $name . 'Resource($model), 201);' : '$data = $request->validated();' . PHP_EOL . '        $model = ' . $name . '::create($data);' . PHP_EOL . '        return response()->json(new ' . $name . 'Resource($model), 201);') . PHP_EOL . '    }',
             $content
         );
 
         // Replace update method
         $content = preg_replace(
             '/public function update\(Request \$request, [^}]*\}/s',
-            'public function update(Update' . $name . 'Request $request, $id)' . PHP_EOL . '    {' . PHP_EOL . '        ' . ($withService ? '$data = $request->validated();' . PHP_EOL . '        return response()->json($this->service->update' . $name . '($id, $data));' : '$model = ' . $name . '::findOrFail($id);' . PHP_EOL . '        $model->update($request->validated());' . PHP_EOL . '        return response()->json($model);') . PHP_EOL . '    }',
+            'public function update(Update' . $name . 'Request $request, int $id)' . PHP_EOL . '    {' . PHP_EOL . '        ' . ($withService ? '$data = $request->validated();' . PHP_EOL . '        $model = $this->service->update' . $name . '($id, $data);' . PHP_EOL . '        return response()->json(new ' . $name . 'Resource($model));' : '$model = ' . $name . '::findOrFail($id);' . PHP_EOL . '        $model->update($request->validated());' . PHP_EOL . '        return response()->json(new ' . $name . 'Resource($model));') . PHP_EOL . '    }',
             $content
         );
 
@@ -86,17 +88,29 @@ class ControllerGenerator
         if ($withService) {
             $content = str_replace(
                 'return response()->json(' . $name . '::all());',
-                'return response()->json($this->service->get' . $name . 'es());',
+                'return response()->json(' . $name . 'Resource::collection($this->service->get' . $name . 'es()));',
                 $content
             );
             $content = str_replace(
                 'return response()->json(' . $name . '::findOrFail($id));',
-                'return response()->json($this->service->get' . $name . '($id));',
+                'return response()->json(new ' . $name . 'Resource($this->service->get' . $name . '($id)));',
                 $content
             );
             $content = str_replace(
                 $name . '::findOrFail($id)->delete();',
                 '$this->service->delete' . $name . '($id);',
+                $content
+            );
+        } else {
+            // When no service, still wrap responses in resources
+            $content = str_replace(
+                'return response()->json(' . $name . '::all());',
+                'return response()->json(' . $name . 'Resource::collection(' . $name . '::all()));',
+                $content
+            );
+            $content = str_replace(
+                'return response()->json(' . $name . '::findOrFail($id));',
+                'return response()->json(new ' . $name . 'Resource(' . $name . '::findOrFail($id)));',
                 $content
             );
         }

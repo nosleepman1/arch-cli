@@ -6,10 +6,14 @@ use App\Models\{{model}};
 
 class {{class}}Service
 {
+    private bool $withEvents = {{withEvents}};
+
     public function create{{class}}(array $data)
     {
         $model = {{model}}::create($data);
-        event(new \App\Events\{{class}}Created($model));
+        if ($this->withEvents) {
+            event(new \App\Events\{{class}}Created($model));
+        }
         return $model;
     }
 
@@ -18,19 +22,19 @@ class {{class}}Service
         return {{model}}::all();
     }
 
-    public function get{{class}}($id)
+    public function get{{class}}(int $id)
     {
         return {{model}}::findOrFail($id);
     }
 
-    public function update{{class}}($id, array $data)
+    public function update{{class}}(int $id, array $data)
     {
         $model = {{model}}::findOrFail($id);
         $model->update($data);
         return $model;
     }
 
-    public function delete{{class}}($id)
+    public function delete{{class}}(int $id)
     {
         $model = {{model}}::findOrFail($id);
         $model->delete();

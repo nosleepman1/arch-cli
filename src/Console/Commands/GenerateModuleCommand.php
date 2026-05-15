@@ -43,7 +43,7 @@ class GenerateModuleCommand extends Command
         // Generate components
         $this->generateModel($modelName, $fields);
         $this->generateMigration($modelName, $fields);
-        $this->generateService($modelName);
+        $this->generateService($modelName, $withEvents);
         $this->generateController($modelName, $version, $withService);
         $this->generateRequests($modelName, $fields);
         if ($withPolicies) {
@@ -59,7 +59,7 @@ class GenerateModuleCommand extends Command
             $this->generateNotification($modelName);
         }
         if ($withResources) {
-            $this->generateResource($modelName);
+            $this->generateResource($modelName, $fields);
         }
 
         $this->info('Module generated successfully!');
@@ -93,10 +93,10 @@ class GenerateModuleCommand extends Command
         $generator->generate($name, $fields);
     }
 
-    private function generateService($name)
+    private function generateService($name, $withEvents = false)
     {
         $generator = new ServiceGenerator();
-        $generator->generate($name);
+        $generator->generate($name, $withEvents);
     }
 
     private function generateController($name, $version, $withService)
@@ -105,10 +105,10 @@ class GenerateModuleCommand extends Command
         $generator->generate($name, $version, $withService);
     }
 
-    private function generateRequests($name)
+    private function generateRequests($name, $fields = '')
     {
         $generator = new RequestGenerator();
-        $generator->generate($name);
+        $generator->generate($name, $fields);
     }
 
     private function generatePolicy($name)
@@ -135,9 +135,9 @@ class GenerateModuleCommand extends Command
         $generator->generate($name);
     }
 
-    private function generateResource($name)
+    private function generateResource($name, $fields = '')
     {
         $generator = new ResourceGenerator();
-        $generator->generate($name);
+        $generator->generate($name, $fields);
     }
 }
