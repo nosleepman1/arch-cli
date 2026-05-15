@@ -36,7 +36,7 @@ class ControllerGenerator
         );
 
         // Add uses
-        $uses = "use App\Http\Controllers;\n";
+        $uses = "use App\Http\Controllers\Controller;\n";
         $uses .= "use App\Models\\{$name};\n";
         if ($withService) {
             $uses .= "use App\Services\\{$name}Service;\n";
@@ -46,12 +46,19 @@ class ControllerGenerator
         $uses .= "use App\Http\Resources\\{$name}Resource;\n";
         $uses .= "use Illuminate\Http\Request;\n";
 
-        // Insert after namespace
-        $content = str_replace(
-            'namespace App\Http\Controllers\Api\\' . strtoupper($version) . ';' . PHP_EOL . PHP_EOL . 'use Illuminate\Http\Request;',
-            'namespace App\Http\Controllers\Api\\' . strtoupper($version) . ';' . PHP_EOL . PHP_EOL . $uses,
-            $content
-        );
+        // Insert or replace use statements
+        if (strpos($content, 'use App\Http\Controllers\Controller;') !== false) {
+            $content = str_replace("use App\Http\Controllers\Controller;\nuse Illuminate\Http\Request;", $uses, $content);
+            $content = str_replace('use App\Http\Controllers\Controller;', $uses, $content);
+        } elseif (strpos($content, 'use Illuminate\Http\Request;') !== false) {
+            $content = str_replace('use Illuminate\Http\Request;', $uses, $content);
+        } else {
+            $content = str_replace(
+                'namespace App\Http\Controllers;'.PHP_EOL,
+                'namespace App\Http\Controllers;'.PHP_EOL.PHP_EOL.$uses,
+                $content
+            );
+        }
 
         // Add service property and constructor if withService
         if ($withService) {
