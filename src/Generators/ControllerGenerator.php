@@ -16,7 +16,7 @@ class ControllerGenerator
 
         // Move to API/V1/
         $oldPath = app_path('Http/Controllers/' . $name . 'Controller.php');
-        $newPath = app_path('Http/Controllers/API/' . strtoupper($version) . '/' . $name . 'Controller.php');
+        $newPath = app_path('Http/Controllers/Api/' . strtoupper($version) . '/' . $name . 'Controller.php');
         \File::ensureDirectoryExists(dirname($newPath));
         \File::move($oldPath, $newPath);
 
@@ -36,7 +36,7 @@ class ControllerGenerator
         );
 
         // Add uses
-        $uses = "use App\Http\Controllers\Controller;\n";
+        $uses = "use App\Http\Controllers;\n";
         $uses .= "use App\Models\\{$name};\n";
         if ($withService) {
             $uses .= "use App\Services\\{$name}Service;\n";
