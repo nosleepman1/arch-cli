@@ -8,7 +8,9 @@ class {{class}}Service
 {
     public function create{{class}}(array $data)
     {
-        return {{model}}::create($data);
+        $model = {{model}}::create($data);
+        event(new \App\Events\{{class}}Created($model));
+        return $model;
     }
 
     public function get{{class}}es()

@@ -31,7 +31,7 @@ class ControllerGenerator
         // Change namespace
         $content = str_replace(
             'namespace App\Http\Controllers;',
-            'namespace App\Http\Controllers\API\\' . strtoupper($version) . ';',
+            'namespace App\Http\Controllers\Api\\' . strtoupper($version) . ';',
             $content
         );
 
@@ -42,11 +42,12 @@ class ControllerGenerator
         }
         $uses .= "use App\Http\Requests\\{$name}\\Store{$name}Request;\n";
         $uses .= "use App\Http\Requests\\{$name}\\Update{$name}Request;\n";
+        $uses .= "use Illuminate\Http\Request;\n";
 
         // Insert after namespace
         $content = str_replace(
-            'namespace App\Http\Controllers\API\\' . strtoupper($version) . ';' . PHP_EOL . PHP_EOL . 'use Illuminate\Http\Request;',
-            'namespace App\Http\Controllers\API\\' . strtoupper($version) . ';' . PHP_EOL . PHP_EOL . $uses . 'use Illuminate\Http\Request;',
+            'namespace App\Http\Controllers\Api\\' . strtoupper($version) . ';' . PHP_EOL . PHP_EOL . 'use Illuminate\Http\Request;',
+            'namespace App\Http\Controllers\Api\\' . strtoupper($version) . ';' . PHP_EOL . PHP_EOL . $uses,
             $content
         );
 
@@ -54,7 +55,7 @@ class ControllerGenerator
         if ($withService) {
             $content = str_replace(
                 'class ' . $name . 'Controller extends Controller' . PHP_EOL . '{',
-                'class ' . $name . 'Controller extends Controller' . PHP_EOL . '{' . PHP_EOL . '    protected ' . $name . 'Service $service;' . PHP_EOL . PHP_EOL . '    public function __construct()' . PHP_EOL . '    {' . PHP_EOL . '        $this->service = new ' . $name . 'Service();' . PHP_EOL . '    }' . PHP_EOL,
+                'class ' . $name . 'Controller extends Controller' . PHP_EOL . '{' . PHP_EOL . '    protected ' . $name . 'Service $service;' . PHP_EOL . PHP_EOL . '    public function __construct(' . $name . 'Service $service)' . PHP_EOL . '    {' . PHP_EOL . '        $this->service = $service;' . PHP_EOL . '    }' . PHP_EOL,
                 $content
             );
         }
