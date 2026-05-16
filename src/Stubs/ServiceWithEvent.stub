@@ -3,13 +3,21 @@
 namespace App\Services;
 
 use App\Models\{{model}};
+use \App\Events;
 
 class {{class}}Service
 {
+    private bool $withEvents = {{withEvents}};
 
     public function create{{class}}(array $data)
     {
         $model = {{model}}::create($data);
+        
+        /**
+        *your service logic here
+        */
+   
+        event(new {{class}}Created($model));
         
         return $model;
     }
