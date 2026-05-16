@@ -14,13 +14,13 @@ class ControllerGenerator
             '--api' => true,
         ]);
 
-        // Move to API/V1/
+        
         $oldPath = app_path('Http/Controllers/' . $name . 'Controller.php');
         $newPath = app_path('Http/Controllers/Api/' . strtoupper($version) . '/' . $name . 'Controller.php');
         \File::ensureDirectoryExists(dirname($newPath));
         \File::move($oldPath, $newPath);
 
-        // Modify the content
+       
         $content = \File::get($newPath);
         $content = $this->modifyControllerContent($content, $name, $version, $withService);
         \File::put($newPath, $content);
@@ -35,14 +35,15 @@ class ControllerGenerator
             $content
         );
 
+
         // Add uses
         $uses = "use App\Http\Controllers\Controller;\n";
         $uses .= "use App\Models\\{$name};\n";
+       
         if ($withService) {
             $uses .= "use App\Services\\{$name}Service;\n";
         }
-        $uses .= "use App\Http\Requests\\{$name}\\Store{$name}Request;\n";
-        $uses .= "use App\Http\Requests\\{$name}\\Update{$name}Request;\n";
+
         $uses .= "use App\Http\Resources\\{$name}Resource;\n";
         $uses .= "use Illuminate\Http\Request;\n";
 

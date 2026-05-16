@@ -11,6 +11,7 @@ class {{class}}Service
     public function create{{class}}(array $data)
     {
         $model = {{model}}::create($data);
+        
         if ($this->withEvents) {
             event(new \App\Events\{{class}}Created($model));
         }

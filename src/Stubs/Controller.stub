@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers\Api\{{VERSION}};
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\{{class}}\Store{{class}}Request;
+use App\Http\Requests\{{class}}\Update{{class}}Request;
+use App\Http\Resources\{{class}}Resource;
+use App\Services\{{class}}Service;
+use Illuminate\Http\JsonResponse;
+
+class {{class}}Controller extends Controller
+{
+    public function __construct(
+        protected {{class}}Service $service
+    ) {}
+
+    public function index(): JsonResponse
+    {
+        return response()->json({{class}}Resource::collection($this->service->get{{class}}es()));
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        return response()->json(new {{class}}Resource($this->service->get{{class}}($id)));
+    }
+
+    public function store(Store{{class}}Request $request): JsonResponse
+    {
+        $model = $this->service->create{{class}}($request->validated());
+        return response()->json(new {{class}}Resource($model), 201);
+    }
+
+    public function update(Update{{class}}Request $request, int $id): JsonResponse
+    {
+        $model = $this->service->update{{class}}($id, $request->validated());
+        return response()->json(new {{class}}Resource($model));
+    }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $this->service->delete{{class}}($id);
+        return response()->json(['message' => '{{class}} deleted successfully']);
+    }
+}
