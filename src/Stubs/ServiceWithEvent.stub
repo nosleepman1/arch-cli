@@ -7,7 +7,6 @@ use \App\Events;
 
 class {{class}}Service
 {
-    private bool $withEvents = {{withEvents}};
 
     public function create{{class}}(array $data)
     {
