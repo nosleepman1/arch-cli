@@ -15,8 +15,10 @@ class ServiceGenerator
 
         $path = app_path('Services/' . $name . 'Service.php');
 
+
         File::ensureDirectoryExists(dirname($path));
 
         File::put($path, $stub);
+        
     }
 }
