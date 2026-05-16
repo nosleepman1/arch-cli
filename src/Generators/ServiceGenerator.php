@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 
 class ServiceGenerator
 {
-    public function generate($name)
+    public function generate($name, $withEvents = false)
     {
         $stub = File::get(__DIR__ . '/../Stubs/Service.stub');
 

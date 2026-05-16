@@ -44,17 +44,17 @@ class GenerateModuleCommand extends Command
             $this->info($logo);
 
         $name = $this->argument('name');
-        $full = $this->option('full');
 
         // Interactive prompts
-        $modelName = $this->ask('Model name', $name);
+        $modelName = $name;
         $fields = $this->askForFields();
         $version = $this->choice('Controller version', ['v1', 'v2', 'v3'], 'v1');
         $withPolicies = $this->confirm('Include policies?', true);
-        $withEvents = $this->confirm('Include events?', false);
-
-        // Always include service, requests, resources
-        $withService = true;
+        $service = $this->confirm('Include service layer?', true); // Always include service
+        $withEvents = $this->confirm('Include events and listeners?', false); // Optional events/listeners
+   
+        
+        $withService = $service;
         $withRequests = true;
         $withResources = true;
         $withListeners = $withEvents; 
@@ -67,6 +67,7 @@ class GenerateModuleCommand extends Command
         $this->generateService($modelName, $withEvents);
         $this->generateController($modelName, $version, $withService);
         $this->generateRequests($modelName, $fields);
+
         if ($withPolicies) {
             $this->generatePolicy($modelName);
         }
@@ -156,7 +157,7 @@ class GenerateModuleCommand extends Command
         $generator->generate($name);
     }
 
-    private function generateResource($name, $fields = '')
+    private function generateResource( $name, $fields = '')
     {
         $generator = new ResourceGenerator();
         $generator->generate($name, $fields);
