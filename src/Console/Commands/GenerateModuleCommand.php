@@ -50,9 +50,8 @@ class GenerateModuleCommand extends Command
         $fields = $this->askForFields();
         $version = $this->choice('Controller version', ['v1', 'v2', 'v3'], 'v1');
         $withPolicies = $this->confirm('Include policies?', true);
-        $service = $this->confirm('Include service layer?', true); // Always include service
-        $withEvents = $this->confirm('Include events and listeners?', false); // Optional events/listeners
-   
+        $service = $this->confirm('Include service layer?', true); 
+        $withEvents = $this->confirm('Include events and listeners?', false);
         
         $withService = $service;
         $withRequests = true;
