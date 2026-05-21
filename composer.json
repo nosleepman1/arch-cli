@@ -1,5 +1,5 @@
 {
-    "name": "nosleepman/arch-cli",
+    "name": "nosleepman/module",
     "description": "A Laravel package to generate complete backend architecture from business models",
     "type": "library",
     "license": "MIT",
