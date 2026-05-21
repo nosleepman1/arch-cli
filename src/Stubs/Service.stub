@@ -10,7 +10,9 @@ class {{class}}Service
     public function create{{class}}(array $data)
     {
         $model = {{model}}::create($data);
-        
+
+        // Add event to service 
+
         return $model;
     }
 

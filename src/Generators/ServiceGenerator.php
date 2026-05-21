@@ -15,6 +15,17 @@ class ServiceGenerator
         $stub = str_replace('{{class}}', $name, $stub);
         $stub = str_replace('{{model}}', $name, $stub);
 
+        if ($withEvents) {
+            $eventPath = app_path('Events/' . $name . 'Created.php');
+            $eventStub = File::get(__DIR__ . '/../Stubs/Event.stub');
+            $eventStub = str_replace('{{class}}', $name, $eventStub);
+            $eventStub = str_replace('{{model}}', $name, $eventStub);
+            File::ensureDirectoryExists(dirname($eventPath));
+            File::put($eventPath, $eventStub);
+
+            $stub = str_replace('//', $name . 'Created', $stub);
+        }
+
         $path = app_path('Services/' . $name . 'Service.php');
 
         File::ensureDirectoryExists(dirname($path));

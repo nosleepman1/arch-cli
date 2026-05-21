@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Repositories;
+
+use Illuminate\Http\Request;
+
+class {{class}}Repository
+{
+
+    public function get(Request $request)
+    {
+        
+    }
+
+    public function store(Request $request)
+    {
+        
+    }
+
+    public function update(Request $request)
+    {
+        
+    }
+
+    public function delete(Request $request)
+    {
+        
+    }
+}
