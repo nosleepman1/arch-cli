@@ -16,7 +16,7 @@ use Nosleepman\ArchCLI\Generators\ResourceGenerator;
 
 class GenerateModuleCommand extends Command
 {
-    protected $signature = 'arch:module {name} {--full}';
+    protected $signature = 'make:module {name}';
 
     protected $description = 'Generate a complete backend module for Laravel';
 
