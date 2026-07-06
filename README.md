@@ -3,13 +3,13 @@
 A Laravel package to generate a complete backend architecture from business models.
 This package provides artisan commands to scaffold Models, Migrations, Controllers, Services, Repositories, Policies, Events, Listeners, Notifications, and Resources with a single command.
 
-## 📖 Documentation
+## Documentation
 Please refer to the detailed guides for complete usage instructions:
 - [English Guide](GUIDE.md)
 - [Guide en Français](GUIDE.fr.md)
 - [README en Français](README.fr.md)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
