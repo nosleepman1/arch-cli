@@ -9,24 +9,24 @@ class MigrationGenerator
 {
     public function generate($name, $fields)
     {
-        $table = strtolower($name) . 's'; // assuming plural
+        $table = strtolower($name) . 's'; 
 
         $migrationName = 'create_' . $table . '_table';
 
-        // Use Artisan to create the migration
+        
         Artisan::call('make:migration', [
             'name' => $migrationName,
             '--create' => $table,
         ]);
 
-        // Now, find the created migration file and modify it
+        
         $migrationFiles = File::files(database_path('migrations'));
         $latestMigration = collect($migrationFiles)->sort()->last();
 
         if ($latestMigration) {
             $content = File::get($latestMigration);
             $columns = $this->generateColumns($fields);
-            // Insert columns before the closing brace
+            
             $content = str_replace('        });', $columns . "\n        });", $content);
             File::put($latestMigration, $content);
         }

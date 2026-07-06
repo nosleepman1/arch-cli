@@ -21,7 +21,7 @@ class RequestGenerator
             'name' => $name . '/Store' . $name . 'Request',
         ]);
 
-        // Modify the file to add validation rules
+        
         $path = app_path('Http/Requests/' . $name . '/Store' . $name . 'Request.php');
         $this->addValidationRules($path, $this->fields);
     }
@@ -32,7 +32,7 @@ class RequestGenerator
             'name' => $name . '/Update' . $name . 'Request',
         ]);
 
-        // Modify the file to add validation rules
+        
         $path = app_path('Http/Requests/' . $name . '/Update' . $name . 'Request.php');
         $this->addValidationRules($path, $this->fields);
     }
@@ -42,7 +42,7 @@ class RequestGenerator
         $content = \File::get($path);
         $rules = $this->generateRules($fields);
 
-        // Replace the empty rules array
+        
         $content = str_replace(
             "    public function rules()\n    {\n        return [\n            // Add validation rules here\n        ];\n    }",
             "    public function rules()\n    {\n        return [\n" . $rules . "        ];\n    }",
@@ -77,7 +77,7 @@ class RequestGenerator
 
             foreach ($modifiers as $mod) {
                 if ($mod === 'unique') {
-                    $rule .= "|unique:{$fieldName}s"; // Assuming table name
+                    $rule .= "|unique:{$fieldName}s"; 
                 }
             }
 

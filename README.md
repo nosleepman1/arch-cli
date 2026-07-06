@@ -5,8 +5,8 @@ This package provides artisan commands to scaffold Models, Migrations, Controlle
 
 ## Documentation
 Please refer to the detailed guides for complete usage instructions:
-- [English Guide](GUIDE.md)
-- [Guide en Français](GUIDE.fr.md)
+- [English Guide](docs/GUIDE.md)
+- [Guide en Français](docs/GUIDE.fr.md)
 - [README en Français](README.fr.md)
 
 ## Quick Start

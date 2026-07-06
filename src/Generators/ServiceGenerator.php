@@ -17,18 +17,11 @@ class ServiceGenerator
         $ServiceStub = str_replace('{{model}}', $name, $ServiceStub);
 
         if ($withEvents) {
-           $eventStub = File::get(__DIR__ . '/../Stubs/Event.stub');
-           $eventStub = str_replace('{{class}}', $name, $eventStub);
-           $eventStub = str_replace('{{model}}', $name, $eventStub);
-           $eventPath = app_path('Events/' . $name . 'CreatedEvent.php');
-           File::ensureDirectoryExists(dirname($eventPath));
-           File::put($eventPath, $eventStub);
-            
-           $ServiceStub = str_replace("// use App\Events", "use App\Events", $ServiceStub);
-           $ServiceStub = str_replace('// Add event to service', 'event(new ' . $name . 'Created($model));', $ServiceStub);
+           $ServiceStub = str_replace('{{use_events}}', 'use App\Events\\' . $name . 'Created;', $ServiceStub);
+           $ServiceStub = str_replace('{{add_event}}', 'event(new ' . $name . 'Created($model));', $ServiceStub);
         } else {
-           $ServiceStub = str_replace('// Add event to service', '', $ServiceStub);
-           $ServiceStub = str_replace("// use App\Events", "", $ServiceStub);   
+           $ServiceStub = str_replace('{{add_event}}', '', $ServiceStub);
+           $ServiceStub = str_replace('{{use_events}}', '', $ServiceStub);   
         }
 
         $path = app_path('Services/' . $name . 'Service.php');

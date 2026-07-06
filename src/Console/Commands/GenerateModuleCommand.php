@@ -45,7 +45,7 @@ class GenerateModuleCommand extends Command
 
         $name = $this->argument('name');
 
-        // Interactive prompts
+        
         $modelName = $name;
         $fields = $this->askForFields();
         $version = $this->choice('Controller version', ['v1', 'v2', 'v3'], 'v1');
@@ -60,7 +60,7 @@ class GenerateModuleCommand extends Command
         $withNotifications = $withEvents; 
         $withTests = false; 
 
-        // Generate components
+        
         $this->generateModel($modelName, $fields);
         $this->generateMigration($modelName, $fields);
         $this->generateService($modelName, $withEvents);

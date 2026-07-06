@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\{{model}};
-// use App\Events
+{{use_events}}
 
 class {{class}}Service
 {
@@ -12,7 +12,7 @@ class {{class}}Service
     {
         $model = {{model}}::create($data);
 
-        // Add event to service 
+        {{add_event}} 
 
         return $model;
     }

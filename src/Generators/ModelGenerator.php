@@ -8,16 +8,16 @@ class ModelGenerator
 {
     public function generate($name, $fields)
     {
-        // Use Laravel's make:model
+        
         \Artisan::call('make:model', ['name' => $name]);
 
-        // Then modify the file to add fillable
+        
         $path = app_path('Models/' . $name . '.php');
         $content = \File::get($path);
         $fillable = $this->parseFields($fields);
         $fillableStr = $this->formatFillable($fillable);
 
-        // Add fillable after use HasFactory;
+        
         $content = str_replace(
             'use HasFactory;' . PHP_EOL . PHP_EOL . '    ',
             'use HasFactory;' . PHP_EOL . PHP_EOL . '    protected $fillable = [' . $fillableStr . '];' . PHP_EOL . PHP_EOL . '    ',

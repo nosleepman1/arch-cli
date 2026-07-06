@@ -12,6 +12,6 @@ class {{class}}CreatedListener implements ShouldQueue
 
     public function handle({{class}}Created $event): void
     {
-        // Handle the event
+        
     }
 }

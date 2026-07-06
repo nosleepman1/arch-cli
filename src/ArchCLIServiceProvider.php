@@ -16,6 +16,6 @@ class ArchCLIServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        //
+        
     }
 }

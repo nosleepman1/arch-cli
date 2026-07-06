@@ -5,8 +5,8 @@ Ce package fournit des commandes artisan pour générer rapidement Modèles, Mig
 
 ## Documentation
 Veuillez consulter les guides détaillés pour des instructions d'utilisation complètes :
-- [Guide en Français](GUIDE.fr.md)
-- [English Guide](GUIDE.md)
+- [Guide en Français](docs/GUIDE.fr.md)
+- [English Guide](docs/GUIDE.md)
 - [English README](README.md)
 
 ## Démarrage Rapide
