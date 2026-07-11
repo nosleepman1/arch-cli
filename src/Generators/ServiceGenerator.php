@@ -4,13 +4,11 @@ namespace Nosleepman\ArchCLI\Generators;
 
 use Illuminate\Support\Facades\File;
 
-class ServiceGenerator
+class ServiceGenerator extends BaseGenerator
 {
     public function generate(string $name, bool $withEvents = false): void
     {
-        
-
-        $ServiceStub = File::get(__DIR__ . '/../Stubs/Service.stub');
+        $ServiceStub = $this->getStubContent('Service.stub');
         
 
         $ServiceStub = str_replace('{{class}}', $name, $ServiceStub);

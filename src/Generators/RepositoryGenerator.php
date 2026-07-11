@@ -4,13 +4,13 @@ namespace Nosleepman\ArchCLI\Generators;
 
 use Illuminate\Support\Facades\File;
 
-class RepositoryGenerator
+class RepositoryGenerator extends BaseGenerator
 {
     public function generate(string $name): void
     {
         $stubFile = 'Repository.stub';
 
-        $stub = File::get(__DIR__ . '/../Stubs/' . $stubFile);
+        $stub = $this->getStubContent($stubFile);
 
         $stub = str_replace('{{class}}', $name, $stub);
         $stub = str_replace('{{model}}', $name, $stub);
