@@ -23,10 +23,10 @@ For detailed usage, configuration, and guidelines, please refer to the following
 
 ## Installation
 
-Install the package via Composer as a development dependency:
+Install the package via Composer:
 
 ```bash
-composer require nosleepman1/arch-cli --dev
+composer require nosleepman1/arch-cli
 ```
 
 The package service provider will be automatically registered by Laravel Package Discovery.
