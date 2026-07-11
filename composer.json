@@ -1,8 +1,5 @@
 {
     "name": "nosleepman1/arch-cli",
-    "replace": {
-        "nosleepman1/arch-cli": "self.version"
-    },
     "description": "A Laravel package to generate complete backend architecture from business models",
     "type": "library",
     "license": "MIT",
