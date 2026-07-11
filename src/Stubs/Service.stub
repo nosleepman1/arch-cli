@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\{{model}};
+{{use_events}}
+
+class {{class}}Service
+{
+
+    public function create{{class}}(array $data)
+    {
+        $model = {{model}}::create($data);
+
+        {{add_event}} 
+
+        return $model;
+    }
+
+    public function get{{pluralClass}}()
+    {
+        return {{model}}::all();
+    }
+
+    public function get{{class}}(int $id)
+    {
+        return {{model}}::findOrFail($id);
+    }
+
+    public function update{{class}}(int $id, array $data)
+    {
+        $model = {{model}}::findOrFail($id);
+        $model->update($data);
+        return $model;
+    }
+
+    public function delete{{class}}(int $id)
+    {
+        $model = {{model}}::findOrFail($id);
+        $model->delete();
+    }
+}

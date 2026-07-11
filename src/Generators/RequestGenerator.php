@@ -1,0 +1,96 @@
+<?php
+
+namespace Nosleepman\ArchCLI\Generators;
+
+use Illuminate\Support\Facades\File;
+
+class RequestGenerator
+{
+    private $fields;
+    private $name;
+
+    public function generate($name, $fields = '')
+    {
+        $this->fields = $fields;
+        $this->name = $name;
+        $this->generateStoreRequest($name);
+        $this->generateUpdateRequest($name);
+    }
+
+    private function generateStoreRequest($name)
+    {
+        \Artisan::call('make:request', [
+            'name' => $name . '/Store' . $name . 'Request',
+        ]);
+
+        
+        $path = app_path('Http/Requests/' . $name . '/Store' . $name . 'Request.php');
+        $this->addValidationRules($path, $this->fields);
+    }
+
+    private function generateUpdateRequest($name)
+    {
+        \Artisan::call('make:request', [
+            'name' => $name . '/Update' . $name . 'Request',
+        ]);
+
+        
+        $path = app_path('Http/Requests/' . $name . '/Update' . $name . 'Request.php');
+        $this->addValidationRules($path, $this->fields);
+    }
+
+    private function addValidationRules($path, $fields)
+    {
+        $content = \File::get($path);
+        $rules = $this->generateRules($fields);
+
+        // Matches 'public function rules()' signature with or without return type (: array)
+        // and optionally matching any line comment inside the return array.
+        $pattern = '/(public\s+function\s+rules\s*\(\s*\)\s*(?::\s*array)?\s*\{\s*return\s*\[\s*)(?:\/\/[^\n]*)?(\s*\];\s*\})/s';
+
+        if (preg_match($pattern, $content)) {
+            $content = preg_replace($pattern, '${1}' . "\n" . $rules . '        ${2}', $content);
+        }
+
+        \File::put($path, $content);
+    }
+
+    private function generateRules($fields)
+    {
+        $fieldList = explode(',', $fields);
+        $rules = '';
+        $tableName = strtolower($this->name) . 's';
+
+        foreach ($fieldList as $field) {
+            $parts = explode(':', trim($field));
+            $fieldName = $parts[0];
+            $type = $parts[1] ?? 'string';
+            $modifiers = array_slice($parts, 2);
+
+            $rule = "            '{$fieldName}' => 'required";
+
+            if ($type === 'string') {
+                $rule .= "|string|max:255";
+            } elseif ($type === 'integer') {
+                $rule .= "|integer";
+            } elseif ($type === 'email') {
+                $rule .= "|email";
+            } elseif ($type === 'boolean') {
+                $rule .= "|boolean";
+            }
+
+            foreach ($modifiers as $mod) {
+                if ($mod === 'unique') {
+                    $rule .= "|unique:{$tableName},{$fieldName}"; 
+                }
+            }
+
+            $rule .= "',\n";
+            $rules .= $rule;
+        }
+
+        return $rules;
+    }
+
+   
+}

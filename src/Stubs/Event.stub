@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Events;
+
+use App\Models\{{class}};
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class {{class}}Created
+{
+    use Dispatchable, SerializesModels;
+
+    public {{class}} $model;
+
+    public function __construct({{class}} $model)
+    {
+        $this->model = $model;
+    }
+}
