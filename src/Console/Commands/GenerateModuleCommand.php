@@ -13,6 +13,7 @@ use Nosleepman\ArchCLI\Generators\EventGenerator;
 use Nosleepman\ArchCLI\Generators\ListenerGenerator;
 use Nosleepman\ArchCLI\Generators\NotificationGenerator;
 use Nosleepman\ArchCLI\Generators\ResourceGenerator;
+use Nosleepman\ArchCLI\Generators\RepositoryGenerator;
 
 class GenerateModuleCommand extends Command
 {
@@ -51,6 +52,7 @@ class GenerateModuleCommand extends Command
         $version = $this->choice('Controller version', ['v1', 'v2', 'v3'], 'v1');
         $withPolicies = $this->confirm('Include policies?', true);
         $service = $this->confirm('Include service layer?', true); 
+        $withRepositories = $this->confirm('Include repository layer?', false);
         $withEvents = $this->confirm('Include events and listeners?', false);
         
         $withService = $service;
@@ -63,7 +65,12 @@ class GenerateModuleCommand extends Command
         
         $this->generateModel($modelName, $fields);
         $this->generateMigration($modelName, $fields);
-        $this->generateService($modelName, $withEvents);
+        if ($withRepositories) {
+            $this->generateRepository($modelName);
+        }
+        if ($withService) {
+            $this->generateService($modelName, $withEvents, $withRepositories);
+        }
         $this->generateController($modelName, $version, $withService);
         $this->generateRequests($modelName, $fields);
 
@@ -114,10 +121,16 @@ class GenerateModuleCommand extends Command
         $generator->generate($name, $fields);
     }
 
-    private function generateService($name, $withEvents = false)
+    private function generateService($name, $withEvents = false, $withRepositories = false)
     {
         $generator = new ServiceGenerator();
-        $generator->generate($name, $withEvents);
+        $generator->generate($name, $withEvents, $withRepositories);
+    }
+
+    private function generateRepository($name)
+    {
+        $generator = new RepositoryGenerator();
+        $generator->generate($name);
     }
 
     private function generateController($name, $version, $withService)
