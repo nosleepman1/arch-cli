@@ -17,7 +17,7 @@ class {{class}}Service
         return $model;
     }
 
-    public function get{{class}}es()
+    public function get{{pluralClass}}()
     {
         return {{model}}::all();
     }

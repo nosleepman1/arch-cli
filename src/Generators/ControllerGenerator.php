@@ -13,6 +13,7 @@ class ControllerGenerator extends BaseGenerator
         $stub = $this->getStubContent($stubFile);
 
         $stub = str_replace('{{class}}', $name, $stub);
+        $stub = str_replace('{{pluralClass}}', \Illuminate\Support\Str::plural($name), $stub);
         $stub = str_replace('{{VERSION}}', strtoupper($version), $stub);
 
         $path = app_path('Http/Controllers/Api/' . strtoupper($version) . '/' . $name . 'Controller.php');

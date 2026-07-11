@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\File;
 class RequestGenerator
 {
     private $fields;
+    private $name;
 
     public function generate($name, $fields = '')
     {
         $this->fields = $fields;
+        $this->name = $name;
         $this->generateStoreRequest($name);
         $this->generateUpdateRequest($name);
     }
@@ -57,6 +59,7 @@ class RequestGenerator
     {
         $fieldList = explode(',', $fields);
         $rules = '';
+        $tableName = strtolower($this->name) . 's';
 
         foreach ($fieldList as $field) {
             $parts = explode(':', trim($field));
@@ -78,7 +81,7 @@ class RequestGenerator
 
             foreach ($modifiers as $mod) {
                 if ($mod === 'unique') {
-                    $rule .= "|unique:{$fieldName}s"; 
+                    $rule .= "|unique:{$tableName},{$fieldName}"; 
                 }
             }
 

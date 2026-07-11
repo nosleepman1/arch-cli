@@ -88,24 +88,26 @@ class GenerateModuleCommandTest extends TestCase
         $this->assertStringContainsString('$this->repository->create($data)', $serviceContent);
         $this->assertStringContainsString('use App\Events\ProductCreated;', $serviceContent);
         $this->assertStringContainsString('event(new ProductCreated($model));', $serviceContent);
+        $this->assertStringContainsString('public function getProducts()', $serviceContent);
 
         // Assert Controller
         $controllerPath = app_path('Http/Controllers/Api/V1/ProductController.php');
         $this->assertTrue(File::exists($controllerPath));
         $controllerContent = File::get($controllerPath);
         $this->assertStringContainsString('protected ProductService $service', $controllerContent);
+        $this->assertStringContainsString('getProducts()', $controllerContent);
 
         // Assert Form Requests and dynamic validation rules
         $storeRequestPath = app_path('Http/Requests/Product/StoreProductRequest.php');
         $this->assertTrue(File::exists($storeRequestPath));
         $storeRequestContent = File::get($storeRequestPath);
-        $this->assertStringContainsString("'title' => 'required|string|max:255|unique:titles'", $storeRequestContent);
+        $this->assertStringContainsString("'title' => 'required|string|max:255|unique:products,title'", $storeRequestContent);
         $this->assertStringContainsString("'price' => 'required|integer'", $storeRequestContent);
 
         $updateRequestPath = app_path('Http/Requests/Product/UpdateProductRequest.php');
         $this->assertTrue(File::exists($updateRequestPath));
         $updateRequestContent = File::get($updateRequestPath);
-        $this->assertStringContainsString("'title' => 'required|string|max:255|unique:titles'", $updateRequestContent);
+        $this->assertStringContainsString("'title' => 'required|string|max:255|unique:products,title'", $updateRequestContent);
 
         // Assert API Resource
         $resourcePath = app_path('Http/Resources/ProductResource.php');
