@@ -12,6 +12,12 @@ class ArchCLIServiceProvider extends ServiceProvider
         $this->commands([
             GenerateModuleCommand::class,
         ]);
+
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/Stubs' => base_path('stubs/vendor/arch-cli'),
+            ], 'arch-cli-stubs');
+        }
     }
 
     public function register(): void

@@ -4,13 +4,13 @@ namespace Nosleepman\ArchCLI\Generators;
 
 use Illuminate\Support\Facades\File;
 
-class ControllerGenerator
+class ControllerGenerator extends BaseGenerator
 {
     public function generate(string $name, string $version, bool $withService): void
     {
         $stubFile = $withService ? 'Controller.stub' : 'ControllerWithoutService.stub';
 
-        $stub = File::get(__DIR__ . '/../Stubs/' . $stubFile);
+        $stub = $this->getStubContent($stubFile);
 
         $stub = str_replace('{{class}}', $name, $stub);
         $stub = str_replace('{{VERSION}}', strtoupper($version), $stub);

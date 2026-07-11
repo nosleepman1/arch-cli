@@ -4,11 +4,11 @@ namespace Nosleepman\ArchCLI\Generators;
 
 use Illuminate\Support\Facades\File;
 
-class ResourceGenerator
+class ResourceGenerator extends BaseGenerator
 {
     public function generate($name, $fields = '')
     {
-        $stub = File::get(__DIR__ . '/../Stubs/Resource.stub');
+        $stub = $this->getStubContent('Resource.stub');
 
         $stub = str_replace('{{class}}', $name, $stub);
         $fields_array = $this->parseFields($fields);

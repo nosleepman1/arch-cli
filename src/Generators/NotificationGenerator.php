@@ -4,11 +4,11 @@ namespace Nosleepman\ArchCLI\Generators;
 
 use Illuminate\Support\Facades\File;
 
-class NotificationGenerator
+class NotificationGenerator extends BaseGenerator
 {
     public function generate($name)
     {
-        $stub = File::get(__DIR__ . '/../Stubs/Notification.stub');
+        $stub = $this->getStubContent('Notification.stub');
 
         $stub = str_replace('{{class}}', $name, $stub);
 

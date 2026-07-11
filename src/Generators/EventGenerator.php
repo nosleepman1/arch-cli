@@ -4,11 +4,11 @@ namespace Nosleepman\ArchCLI\Generators;
 
 use Illuminate\Support\Facades\File;
 
-class EventGenerator
+class EventGenerator extends BaseGenerator
 {
     public function generate($name)
     {
-        $stub = File::get(__DIR__ . '/../Stubs/Event.stub');
+        $stub = $this->getStubContent('Event.stub');
 
         $stub = str_replace('{{class}}', $name, $stub);
 

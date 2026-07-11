@@ -4,11 +4,11 @@ namespace Nosleepman\ArchCLI\Generators;
 
 use Illuminate\Support\Facades\File;
 
-class ListenerGenerator
+class ListenerGenerator extends BaseGenerator
 {
     public function generate($name)
     {
-        $stub = File::get(__DIR__ . '/../Stubs/Listener.stub');
+        $stub = $this->getStubContent('Listener.stub');
 
         $stub = str_replace('{{class}}', $name, $stub);
 
