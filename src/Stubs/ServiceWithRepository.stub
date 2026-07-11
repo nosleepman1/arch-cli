@@ -31,7 +31,7 @@ class {{class}}Service
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function get{{class}}es()
+    public function get{{pluralClass}}()
     {
         return $this->repository->all();
     }

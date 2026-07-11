@@ -1,4 +1,4 @@
-# Arch CLI (nosleepman/module)
+# Arch CLI (nosleepman1/arch-cli)
 
 A Laravel package to generate a complete backend architecture from business models.
 This package provides artisan commands to scaffold Models, Migrations, Controllers, Services, Repositories, Policies, Events, Listeners, Notifications, and Resources with a single command.
@@ -15,7 +15,7 @@ Please refer to the detailed guides for complete usage instructions:
 
 Require the package via composer:
 ```bash
-composer require nosleepman/module
+composer require nosleepman1/arch-cli
 ```
 
 The service provider will be automatically registered.

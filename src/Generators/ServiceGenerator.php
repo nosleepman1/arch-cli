@@ -15,6 +15,7 @@ class ServiceGenerator extends BaseGenerator
 
         $ServiceStub = str_replace('{{class}}', $name, $ServiceStub);
         $ServiceStub = str_replace('{{model}}', $name, $ServiceStub);
+        $ServiceStub = str_replace('{{pluralClass}}', \Illuminate\Support\Str::plural($name), $ServiceStub);
 
         if ($withEvents) {
            $ServiceStub = str_replace('{{use_events}}', 'use App\Events\\' . $name . 'Created;', $ServiceStub);

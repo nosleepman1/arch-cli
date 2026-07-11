@@ -17,7 +17,7 @@ class {{class}}Controller extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json({{class}}Resource::collection($this->service->get{{class}}es()));
+        return response()->json({{class}}Resource::collection($this->service->get{{pluralClass}}()));
     }
 
     public function show(int $id): JsonResponse
