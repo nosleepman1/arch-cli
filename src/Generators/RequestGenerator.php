@@ -42,12 +42,13 @@ class RequestGenerator
         $content = \File::get($path);
         $rules = $this->generateRules($fields);
 
-        
-        $content = str_replace(
-            "    public function rules()\n    {\n        return [\n            // Add validation rules here\n        ];\n    }",
-            "    public function rules()\n    {\n        return [\n" . $rules . "        ];\n    }",
-            $content
-        );
+        // Matches 'public function rules()' signature with or without return type (: array)
+        // and optionally matching any line comment inside the return array.
+        $pattern = '/(public\s+function\s+rules\s*\(\s*\)\s*(?::\s*array)?\s*\{\s*return\s*\[\s*)(?:\/\/[^\n]*)?(\s*\];\s*\})/s';
+
+        if (preg_match($pattern, $content)) {
+            $content = preg_replace($pattern, '${1}' . "\n" . $rules . '        ${2}', $content);
+        }
 
         \File::put($path, $content);
     }
