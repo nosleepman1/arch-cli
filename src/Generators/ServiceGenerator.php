@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\File;
 
 class ServiceGenerator extends BaseGenerator
 {
-    public function generate(string $name, bool $withEvents = false): void
+    public function generate(string $name, bool $withEvents = false, bool $withRepositories = false): void
     {
-        $ServiceStub = $this->getStubContent('Service.stub');
+        $stubFile = $withRepositories ? 'ServiceWithRepository.stub' : 'Service.stub';
+
+        $ServiceStub = $this->getStubContent($stubFile);
         
 
         $ServiceStub = str_replace('{{class}}', $name, $ServiceStub);

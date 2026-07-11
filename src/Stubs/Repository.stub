@@ -2,28 +2,64 @@
 
 namespace App\Repositories;
 
-use Illuminate\Http\Request;
+use App\Models\{{model}};
 
 class {{class}}Repository
 {
-
-    public function get(Request $request)
+    /**
+     * Get all instances of {{model}}.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function all()
     {
-        
+        return {{model}}::all();
     }
 
-    public function store(Request $request)
+    /**
+     * Find an instance of {{model}} by ID.
+     *
+     * @param int $id
+     * @return {{model}}
+     */
+    public function find(int $id)
     {
-        
+        return {{model}}::findOrFail($id);
     }
 
-    public function update(Request $request)
+    /**
+     * Create a new instance of {{model}}.
+     *
+     * @param array $data
+     * @return {{model}}
+     */
+    public function create(array $data)
     {
-        
+        return {{model}}::create($data);
     }
 
-    public function delete(Request $request)
+    /**
+     * Update an instance of {{model}}.
+     *
+     * @param int $id
+     * @param array $data
+     * @return {{model}}
+     */
+    public function update(int $id, array $data)
     {
-        
+        $model = $this->find($id);
+        $model->update($data);
+        return $model;
+    }
+
+    /**
+     * Delete an instance of {{model}}.
+     *
+     * @param int $id
+     * @return bool|null
+     */
+    public function delete(int $id)
+    {
+        return $this->find($id)->delete();
     }
 }
